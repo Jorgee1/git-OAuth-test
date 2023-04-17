@@ -82,5 +82,8 @@ export const getUser = async (access_token: string) => {
 
     const unsafeResponse = await response.json()
     console.log('GET USER',unsafeResponse)
-    return userSchema.parse(unsafeResponse)
+    const parsedResponse = userSchema.safeParse(unsafeResponse)
+
+    if (!parsedResponse.success) return userSchemaError.parse(unsafeResponse)
+    return parsedResponse.data
 }
